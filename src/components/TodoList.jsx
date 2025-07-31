@@ -1,27 +1,33 @@
-import React from 'react'
+import { useTodos } from "../context/TodoContext";
 
-function TodoList({todos, onRemove}) {
-    if (todos.length === 0) {
-        return <p className="text-center text-grey-500">No todos yet!</p>
-    }
-    return (
-        <ul className="space-y-2">
-            {todos.map((todo) => (
-                <li
-                    key={todo.id}
-                    className='flex justify-between items-center p-2 border rounded-md'
-                >
-                    <span>{todo.text}</span>
-                    <button
-                        onClick={() => onRemove(todo.id)}
-                        className="text-red-500 hover:text-red-700 font-bold"
-                    >
-                        Delete
-                    </button>
-                </li>
-            ))}
-        </ul>
-    )
+function TodoList() {
+  const { todos, toggleComplete, deleteTodo } = useTodos();
+
+  return (
+    <ul className="mt-4 space-y-2">
+      {todos.map((todo) => (
+        <li
+          key={todo.id}
+          className="flex justify-between items-center border px-3 py-2 rounded"
+        >
+          <span
+            className={`flex-1 cursor-pointer ${
+              todo.completed ? "line-through text-gray-400" : ""
+            }`}
+            onClick={() => toggleComplete(todo.id)}
+          >
+            {todo.text}
+          </span>
+          <button
+            className="text-red-500 hover:underline"
+            onClick={() => deleteTodo(todo.id)}
+          >
+            Delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
-export default TodoList
+export default TodoList;

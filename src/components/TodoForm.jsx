@@ -1,12 +1,16 @@
 import React, {useState} from 'react'
+import {useTodos} from '../context/TodoContext'
 
-function TodoForm({onAdd}) {
+function TodoForm() {
+    const {addTodo} = useTodos();
     const [input, setInput] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        onAdd(input)
-        setInput('')
+        if(input.trim()){
+            addTodo(input)
+            setInput('')
+        }
     }
   return (
     <form onSubmit={handleSubmit} className='flex mb-4'>
