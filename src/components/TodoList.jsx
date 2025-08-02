@@ -1,26 +1,33 @@
-import { useTodos } from "../context/TodoContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTodo, toggleTodo } from "../features/todosSlice";
 
-function TodoList() {
-  const { todos, toggleComplete, deleteTodo } = useTodos();
+const TodoList = () => {
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+
+  if (!todos.length)
+    return <p className="mt-6 text-gray-500 text-center">No todos yet.</p>;
 
   return (
-    <ul className="mt-4 space-y-2">
+    <ul className="space-y-3">
       {todos.map((todo) => (
         <li
           key={todo.id}
-          className="flex justify-between items-center border px-3 py-2 rounded"
+          className="flex justify-between items-center bg-white border border-gray-200 shadow-sm rounded-lg p-3"
         >
           <span
+            onClick={() => dispatch(toggleTodo(todo.id))}
             className={`flex-1 cursor-pointer ${
-              todo.completed ? "line-through text-gray-400" : ""
+              todo.completed
+                ? "line-through text-gray-400"
+                : "text-gray-800"
             }`}
-            onClick={() => toggleComplete(todo.id)}
           >
             {todo.text}
           </span>
           <button
-            className="text-red-500 hover:underline"
-            onClick={() => deleteTodo(todo.id)}
+            onClick={() => dispatch(deleteTodo(todo.id))}
+            className="text-sm text-red-500 hover:text-red-600 font-medium transition"
           >
             Delete
           </button>
@@ -28,6 +35,6 @@ function TodoList() {
       ))}
     </ul>
   );
-}
+};
 
 export default TodoList;

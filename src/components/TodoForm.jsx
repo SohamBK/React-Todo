@@ -1,34 +1,36 @@
-import React, {useState} from 'react'
-import {useTodos} from '../context/TodoContext'
+import { useDispatch } from "react-redux";
+import { addTodo } from "../features/todosSlice";
+import { useState } from "react";
 
-function TodoForm() {
-    const {addTodo} = useTodos();
-    const [input, setInput] = useState('')
+const TodoForm = () => {
+  const [text, setText] = useState("");
+  const dispatch = useDispatch();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if(input.trim()){
-            addTodo(input)
-            setInput('')
-        }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (text.trim()) {
+      dispatch(addTodo(text));
+      setText("");
     }
-  return (
-    <form onSubmit={handleSubmit} className='flex mb-4'>
-        <input 
-            type='text'
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder='Add a Todo'
-            className='flex-grow p-2 border rounded-l-md focus:outline-none'
-        />
-        <button
-            type="submit"
-            className="px-4 bg-blue-500 text-white font-semibold rounded-r-md hover:bg-blue-600"
-        >
-            Add
-        </button>
-    </form>
-  )
-}
+  };
 
-export default TodoForm
+  return (
+    <form onSubmit={handleSubmit} className="flex items-center gap-3 mb-4">
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        className="flex-1 border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        placeholder="Add a new task..."
+      />
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition"
+      >
+        Add
+      </button>
+    </form>
+  );
+};
+
+export default TodoForm;
